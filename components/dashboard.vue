@@ -1,0 +1,1 @@
+<template> <div>dffff</div></template><script>export default { name: "FundalDashboard", data() { return {}; }, mounted() {}, methods: {},};</script><style lang="css" scoped>* { color: black;}</style>

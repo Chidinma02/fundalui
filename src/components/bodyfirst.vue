@@ -1,0 +1,38 @@
+<template>
+  <div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 mt-1">
+          <img src="../assets/Group 2.png" class="img-fluid" />
+        </div>
+        <h1 class="mt-3 fundalh1">Fundall Expense Tracker</h1>
+        <h2 class="mt-2">Mini Project Frontend</h2>
+        <p class="mt-4 fundalh1">by Babatunde Fashola</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "FundalBodyfirst",
+
+  data() {
+    return {};
+  },
+
+  mounted() {},
+
+  methods: {},
+};
+</script>
+
+<style lang="css" scoped>
+* {
+  color: black;
+}
+.fundalh1 {
+  font-weight: bold;
+  color: black;
+}
+</style>

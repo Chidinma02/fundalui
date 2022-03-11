@@ -1,58 +1,79 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <div class="container mt-2">
+      <!-- <div class="row"> -->
+      <!-- <div class="col-lg-9 col-sm-2 logo"> -->
+      <!-- <img src="../assets/Fundall-MintGreen-Lockup.png" /> -->
+      <!-- </div> -->
+      <!-- <div class="col-lg-3 col-sm-10"> -->
+      <!-- <div class="row"> -->
+      <!-- <div class="col-6"><h6 class="mt-2">LOG IN</h6></div> -->
+      <!-- <div class="col-6"> -->
+      <!-- <button type="button" class="btn btn-success">SIGN UP</button> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <div class="row">
+        <div class="col-5 col-lg-8 logo">
+          <!-- <img src="../assets/Fundall-MintGreen-Lockup.png" /> -->
+          <FundalLogo></FundalLogo>
+        </div>
+        <div class="col-3 col-lg-2 col-for-space mt-4">
+          <h6 class="loggin" @click="gotoLogin">LOG IN</h6>
+        </div>
+        <div class="col-4 col-lg-2 col-for-space mt-3">
+          <button type="button" class="button-for-sign-up" @click="goToSignup">
+            <router-link to="/signup" class="navi"></router-link>SIGN UP
+          </button>
+        </div>
+      </div>
+      <FundalBodyfirst></FundalBodyfirst>
+    </div>
   </div>
 </template>
 
 <script>
+import FundalBodyfirst from "../components/bodyfirst.vue";
+import FundalLogo from "../components/logo.vue";
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
+  components: {
+    FundalBodyfirst,
+    FundalLogo,
+  },
+  methods: {
+    goToSignup() {
+      this.$router.push("/signup");
+    },
+    gotoLogin() {
+      this.$router.push("/login");
+    },
+  },
   props: {
-    msg: String
-  }
-}
+    msg: String,
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+* {
+  color: black;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.button-for-sign-up {
+  background-color: #4ce895;
+  border: #4ce895;
+  padding: 6px 11px 6px 11px;
+  border-radius: 6px;
+  font-weight: bold;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+.logo {
+  text-align: left;
 }
-a {
-  color: #42b983;
+.col-for-space {
+  text-align: right;
+}
+.loggin {
+  font-weight: bold;
 }
 </style>
