@@ -200,8 +200,12 @@ export default {
   },
 
   mounted() {},
+created(){
+    
+},
+  methods: {
 
-  methods: {},
+  },
 };
 </script>
 
