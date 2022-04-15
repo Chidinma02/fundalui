@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="col-12 col-lg-6 mt-1 boxshadowing">
-          <p>{{ error }}</p>
+          <p v-if="error !== null">{{ error }}</p>
           <form class="row g-3 mt-3 fo" @submit.prevent="onLogin()">
             <div class="col-md-6">
               <label for="inputEmail4" class="form-label">First Name</label>
@@ -122,7 +122,7 @@ export default {
       email: "",
       password: "",
       password_confirmation: "",
-      error: "",
+      error: null,
     };
   },
 
@@ -147,9 +147,9 @@ export default {
         );
         console.log(response);
         this.$router.push("/login");
-      } catch (err) {
-        this.error = err;
-        console.log(err);
+      } catch (error) {
+        this.error = error.message;
+        console.log(error);
       }
     },
   },

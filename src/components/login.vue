@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container vg">
       <div class="row mt-2">
         <div class="col-12 col-lg-6">
           <!-- <div class="row"></div> -->
@@ -24,6 +24,7 @@
         <div class="col-12 col-lg-6 mt-3 boxshadowing">
           <h1 class="fo mt-5">Holla</h1>
           <p class="fo fi">Sign in the the vibe!</p>
+          <p>{{ error }}</p>
           <form class="row g-3 mt-3 fo" @submit.prevent="onLogin()">
             <div class="col-md-12 mt-4 bg-white">
               <label for="inputEmail4" class="form-label"
@@ -89,6 +90,7 @@ export default {
     return {
       email: "",
       password: "",
+      error: "",
     };
   },
 
@@ -113,6 +115,7 @@ export default {
         // console.log(result.data.success.user.access_token);
         this.$router.push("/dashboard");
       } catch (err) {
+        this.error = err;
         console.log(err);
       }
     },
