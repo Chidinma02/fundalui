@@ -23,7 +23,7 @@
         </div>
         <div class="col-12 col-lg-6 mt-3 boxshadowing">
           <h1 class="fo mt-5">Holla</h1>
-          <p class="fo fi">Sign in tos the vibe!</p>
+          <p class="fo fi">Sign in the the vibe!</p>
           <form class="row g-3 mt-3 fo" @submit.prevent="onLogin()">
             <div class="col-md-12 mt-4 bg-white">
               <label for="inputEmail4" class="form-label"
@@ -58,7 +58,7 @@
             <div class="col-12 ml-3 mr-3 mt-5">
               <!-- <button class="btn btn-success">SIGN UP</button>
                -->
-              <button type="submit" class="block pt-3 pb-3">LOGIN</button>
+              <button type="submit" class="block pt-3 pb-3">SIGN UP</button>
             </div>
           </form>
           <div class="mt-3">
@@ -98,28 +98,23 @@ export default {
     gotosign() {
       this.$router.push("/signup");
     },
-    async onLogin() {
-      let result = await axios
-        .post(`https://campaign.fundall.io/api/v1/login`, {
-          email: this.email,
-          password: this.password,
-        })
-        .then((res) => console.log(res.data));
-      if (result == "success" && result.data.length > 0) {
-        localStorage.setItem("user-info", JSON.stringify(result.data));
-        // this.$router.push({ name: "dashboard" })
-        this.$router.push({ path: "/" });
-      }
-      console.warn(result);
-      //   console.log("login started");
-      //   axios
-      // .post("https://campaign.fundall.io/api/v1/login", {
-      //   email: this.email,
-      //   password: this.password,
-      // })
-      // .then((res) => console.log(res.data))
 
-      // .catch((error) => console.log(error));
+    async onLogin() {
+      try {
+        let result = await axios.post(
+          `https://campaign.fundall.io/api/v1/login`,
+          {
+            email: this.email,
+            password: this.password,
+          }
+        );
+
+        localStorage.setItem("token", result.data.success.user.access_token);
+        // console.log(result.data.success.user.access_token);
+        this.$router.push("/dashboard");
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

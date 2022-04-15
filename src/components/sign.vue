@@ -25,24 +25,27 @@
             <!-- <FundalLogo></FundalLogo> -->
           </div>
         </div>
-        <div class="col-12 col-lg-6 mt-1">
-          <form class="row g-3 mt-3 for" @submit.prevent="signUp()">
+        <div class="col-12 col-lg-6 mt-1 boxshadowing">
+          <p>{{ error }}</p>
+          <form class="row g-3 mt-3 fo" @submit.prevent="onLogin()">
             <div class="col-md-6">
               <label for="inputEmail4" class="form-label">First Name</label>
               <input
-                type="email"
+                type="text"
                 class="form-control shadow-none"
                 id="inputEmail4"
                 placeholder="Enter First Name"
+                v-model="firstname"
               />
             </div>
             <div class="col-md-6">
               <label for="inputPassword4" class="form-label">Last Name</label>
               <input
-                type="password"
+                type="text"
                 class="form-control shadow-none"
                 id="inputPassword4"
                 placeholder="Enter Last Name"
+                v-model="lastname"
               />
             </div>
             <div class="col-12">
@@ -52,6 +55,7 @@
                 class="form-control shadow-none"
                 id="inputAddress"
                 placeholder="Enter Email"
+                v-model="email"
               />
             </div>
             <div class="col-12">
@@ -59,10 +63,11 @@
                 >Password</label
               >
               <input
-                type="text"
+                type="password"
                 class="form-control shadow-none"
                 id="inputAddress2"
                 placeholder="Enter Password"
+                v-model="password"
               />
             </div>
             <div class="col-12">
@@ -70,16 +75,17 @@
                 >Confirm Password</label
               >
               <input
-                type="text"
+                type="password"
                 class="form-control shadow-none"
                 id=""
                 placeholder="Confirm Password"
+                v-model="password_confirmation"
               />
             </div>
-            <div class="col-12 ml-3 mr-3">
+            <div class="col-12 ml-3 mr-3 mt-5">
               <!-- <button class="btn btn-success">SIGN UP</button>
                -->
-              <button type="button" class="block pt-3 pb-3">SIGN UP</button>
+              <button type="submit" class="block pt-3 pb-3">SIGN UP</button>
             </div>
           </form>
           <div class="mt-3">
@@ -112,10 +118,11 @@ export default {
   data() {
     return {
       firstname: "",
+      lastname: "",
       email: "",
       password: "",
       password_confirmation: "",
-      lastname: "",
+      error: "",
     };
   },
 
@@ -125,51 +132,25 @@ export default {
     loginHere() {
       this.$router.push("/login");
     },
-    // async signUp() {
-    // let url = this.keyword.length > 0 ? this.keyword : "africa";
-    //   this.isImageLoading = true;
-    //  try {
-    // const request = await axios.get(
-    //   `https://api.unsplash.com/search/photos?query=${url}`,
-    //   {
-    // headers: {
-    //   Authorization:
-    // "Client-ID UiU6aTDIExSGdnSs5mqyyPE1pUYz0oy74AHU-DSWLXA",
-    //   "Accept-Version": "v1",
-    // },
-    //   }
-    // );
-    //   axios.post("https://campaign.fundall.io/api/v1/register", {
-    // headers: {
-    //   Authorization: "Bearer 'API_TOKEN'",
-    //   "Content-Type": "application/json",
-    // },
 
-    // email: this.email,
-    // password: this.password,
-    // firstname: this.name,
-    // lastname: this.name,
-    // password_confirmation: this.password_confirmation,
-    //   });
-
-    Login() {
-      const data = {
-        firstname: this.firstname,
-        lastname: this.firstname,
-        email: this.email,
-        password: this.password,
-        passwordConfirm: this.passwordConfirm,
-      };
-      axios
-        .post("https://campaign.fundall.io/api/v1/register", data)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      this.$router.push("/login");
+    async onLogin() {
+      try {
+        const response = await axios.post(
+          "https://campaign.fundall.io/api/v1/register",
+          {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password,
+            password_confirmation: this.password_confirmation,
+          }
+        );
+        console.log(response);
+        this.$router.push("/login");
+      } catch (err) {
+        this.error = err;
+        console.log(err);
+      }
     },
   },
 };
@@ -216,5 +197,9 @@ export default {
 }
 input:focus {
   border: 1px solid #4ce895 !important;
+}
+.boxshadowing {
+  box-shadow: 0 4px 8px 0 rgba(161, 160, 160, 0.2),
+    0 6px 20px 0 rgba(161, 160, 160, 0.19);
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="container">
+    <WorkspaceJsonSpinner v-if="loading === true" />
+    <div class="container" v-if="loading === false">
       <div class="row">
         <div class="col-md-5 col-12 mt-3">
           <div class="logo">
@@ -10,29 +11,38 @@
             />
           </div>
           <div class="row mt-5">
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-sm-12 col-md-3">
               <div class="co text-center">
-                <img src="../assets/Vector.png" class="mt-5 mb-5" />
+                <img
+                  v-if="avater === ''"
+                  src="../assets/Vector.png"
+                  class="mt-5 mb-5 img-fluid"
+                />
+                <img v-else :src="avater" class="img-fluid" />
               </div>
             </div>
-            <div class="col-12 col-md-8 mt-5">
+            <div class="col-12 col-sm-12 col-md-8 mt-5">
               <div class="logo">
-                <h1 class="h1-for-target">Babatunde Fashola</h1>
-                <p class="p-for-target">baba2@gmail.com</p>
+                <h1 class="h1-for-target">{{ firstname }} {{ lastname }}</h1>
+                <p class="p-for-target">{{ email }}</p>
               </div>
             </div>
           </div>
           <div class="logo">
             <p class="p-for-target mt-5">Target Monthly Expenses</p>
-            <h4 class="">#596,000</h4>
+            <h4 class="">#{{ total_balance }}</h4>
 
             <div>
-              <b-progress
-                :value="value"
-                :variant="success"
-                :max="max"
-                class="mb-3 pro success"
-              ></b-progress>
+              <div class="progress">
+                <div
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 20%"
+                  aria-valuenow="spent"
+                  aria-valuemin="0"
+                  aria-valuemax="income"
+                ></div>
+              </div>
             </div>
           </div>
           <div>
@@ -45,7 +55,6 @@
                       <th scope="col"></th>
                       <th scope="col">Date</th>
                       <th scope="col">Amount</th>
-                      <!-- <th scope="col">Handle</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -57,15 +66,20 @@
                     <tr>
                       <th scope="row"><img src="../assets/Mask.png" /></th>
                       <td>25 Nov,2018</td>
-                      <td class="welcomback">30,000</td>
+                      <td class="welcomeback">30,000</td>
                     </tr>
                     <tr>
                       <th scope="row"><img src="../assets/Mask.png" /></th>
                       <td>28 Oct,2018</td>
-                      <td class="welcomback">30,000</td>
+                      <td class="welcomeback">30,000</td>
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div class="row">
+                <div class="col mt-3">
+                  <p><img src="../assets/Group (3).png" /></p>
+                </div>
               </div>
             </div>
           </div>
@@ -74,7 +88,7 @@
           <div class="row ro pt-3 pb-3 container">
             <div class="col-8">
               <h2 class="logo">
-                <span class="welcomback">Welcome back,</span>Babatunde
+                <span class="welcomback">Welcome back,</span>{{ firstname }}
               </h2>
               <p class="logo">Now,let's get your expenses for this month.</p>
             </div>
@@ -160,18 +174,24 @@
                   placeholder="2"
                 />
               </div>
-              <div class="col-4"></div>
-              <div class="col-8">
-                <p>
-                  Total Actual Expenses:#
+              <div class="row mt-5">
+                <div class="col-md-4 col-sm-12"></div>
+                <div class="col-md-5 ml-5 col-sm-6">
+                  <h5>Total Actual Expenses: <span class="ml-5">#</span></h5>
+                </div>
+                <div class="col-md-3 ml-5 col-sm-6">
                   <input
                     type="text"
-                    class="form-control col-4"
-                    placeholder="First name"
+                    class="form-control"
+                    placeholder="40,000"
                     aria-label="First name"
                   />
-                </p>
+                </div>
               </div>
+              <!-- <div class="col-2"></div> -->
+              <!-- <div class="col-10"> -->
+              <!-- <p>Total Actual Expenses:#</p> -->
+              <!-- </div> -->
               <div class="col-12">
                 <button type="submit" class="btn bt mb-5">
                   SAVE TODAY'S EXPENSES
@@ -186,9 +206,13 @@
 </template>
 
 <script>
+import axios from "axios";
+import WorkspaceJsonSpinner from "./ui/spinner";
 export default {
   name: "FundalDash",
-
+  components: {
+    WorkspaceJsonSpinner,
+  },
   data() {
     return {
       //   bars: [{ variant: "success", value: 75 }],
@@ -196,16 +220,49 @@ export default {
       value: 33.333333333,
       max: 50,
       variant: "success",
+      firstname: "",
+      lastname: "",
+      email: "",
+      avater: "",
+      monthly_target: "",
+      income: "",
+      total_balance: "",
+      loading: false,
+      error: null,
     };
   },
 
-  mounted() {},
-created(){
-    
-},
-  methods: {
-
+  async created() {
+    // console.log(localStorage.getItem("token"));
+    this.loading = true;
+    try {
+      const response = await axios.get(
+        "https://campaign.fundall.io/api/v1/base/profile",
+        {
+          headers: {
+            Accept: " application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = response.data.success.data;
+      this.firstname = data.firstname;
+      (this.lastname = data.lastname),
+        (this.avater = data.avatar),
+        (this.email = data.email),
+        (this.income = data.income),
+        (this.spent = data.spent),
+        (this.total_balance = data.total_balance);
+      console.log(response);
+      this.loading = false;
+    } catch (err) {
+      console.log(err);
+      this.loading = false;
+      this.error = err.message;
+    }
   },
+  mounted() {},
+  methods: {},
 };
 </script>
 
@@ -217,7 +274,7 @@ created(){
   text-align: left;
 }
 .co {
-  height: 120px;
+  /* height: 120px;*/
   border-radius: 20px;
   background-color: #c4c4c4;
 }
@@ -251,5 +308,12 @@ created(){
   color: black;
   background-color: #4ce895;
   font-weight: bold;
+}
+.pro {
+  width: 100%;
+  height: 100%;
+}
+.sp {
+  border: 2px solid solid black;
 }
 </style>
